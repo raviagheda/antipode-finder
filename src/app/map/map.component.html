@@ -2,18 +2,18 @@
   <app-header [form]="form"></app-header>
   <div class="divider"></div>
   <div class="map-frame card shadow">
-    <div class="flex h-screen" *ngIf="isLoading || message">
+    <div class="flex h-screen" *ngIf="isLoading() || message()">
       <div class="m-auto">
-        <ng-container *ngIf="isLoading">
+        <ng-container *ngIf="isLoading()">
           <div class="text-center">Finding your location...</div>
           <progress *ngIf="isLoading" class="progress w-56"></progress>
         </ng-container>
-        <ng-container *ngIf="message">
+        <ng-container *ngIf="message()">
           <ng-container [ngTemplateOutlet]="alertMessage"></ng-container>
         </ng-container>
       </div>
     </div>
-    <div id="map" [hidden]="isLoading || message"></div>
+    <div id="map" [hidden]="isLoading() || message()"></div>
   </div>
 </div>
 
@@ -26,10 +26,10 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <span>{{message}}</span>
+      <span>{{message()}}</span>
     </div>
     <div class="flex-none">
-      <button class="btn btn-sm" (click)="message = ''">Okay</button>
+      <button class="btn btn-sm" (click)="message.set('')">Okay</button>
     </div>
   </div>
 </ng-template>

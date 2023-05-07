@@ -1,33 +1,29 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, signal } from '@angular/core';
 import * as L from 'leaflet';
 import { Map } from 'leaflet';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { WritableSignal } from '@angular/core';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit {
   private map!: Map;
   center: { lat: number; lng: number } = { lat: 40.73221, lng: -73.91902 };
   zoom: number = 11;
-  isLoading: boolean = false;
-  message: string = ''
+  isLoading: WritableSignal<boolean> = signal<boolean>(false);
+  message: WritableSignal<string> = signal<string>('');
   markers: any[] = [];
 
   form: FormGroup = new FormGroup({
-    lat: new FormControl('', {updateOn: 'blur'}),
-    lng: new FormControl('', {updateOn: 'blur'}),
+    lat: new FormControl(''),
+    lng: new FormControl(''),
   })
 
   constructor() {
-    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-      if(result?.state !== 'granted') {
-        this.message = 'Please allow location permission or enter it manually';
-      }
-    })
   }
 
   ngOnInit(): void {
@@ -36,12 +32,15 @@ export class MapComponent implements OnInit, AfterViewInit {
         this.setMarker(res?.lat, res?.lng);
       }
     })
-  }
-
-
-  ngAfterViewInit(): void {
     this.initMap();
-    this.getLocation();
+
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      this.getLocation(result?.state !== 'granted');
+      if(result?.state !== 'granted') {
+        this.message.set('Please allow location permission or enter it manually');
+      }
+    })
+
   }
 
   private initMap(): void {
@@ -60,9 +59,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     tiles.addTo(this.map);
   }
 
-  getLocation(): void {
+  getLocation(silent: boolean = false): void {
     if (navigator.geolocation) {
-      if(!this.message) this.isLoading = true;
+      if(!silent) this.isLoading.set(true);
       navigator.geolocation.getCurrentPosition((position) => {
         const longitude = position.coords.longitude;
         const latitude = position.coords.latitude;
@@ -71,11 +70,11 @@ export class MapComponent implements OnInit, AfterViewInit {
           lng: longitude
         }, {emitEvent: false});
         this.setMarker(latitude, longitude);
-        this.isLoading = false;
+        this.isLoading.set(false);
       });
     } else {
+      this.isLoading.set(false);
       console.log("No support for geolocation")
-      this.isLoading = false;
     }
   }
 
