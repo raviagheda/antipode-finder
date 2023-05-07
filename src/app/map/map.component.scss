@@ -1,0 +1,19 @@
+.view-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 30px //30px 30px 30px;
+    
+  }
+  
+  .map-frame {
+    border: 2px solid #757575;
+    height: 80%;
+  }
+  
+  #map {
+    height: 100%;
+    border-radius: inherit;
+  }

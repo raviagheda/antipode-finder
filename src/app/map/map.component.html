@@ -1,0 +1,35 @@
+<div class="view-container">
+  <app-header [form]="form"></app-header>
+  <div class="divider"></div>
+  <div class="map-frame card shadow">
+    <div class="flex h-screen" *ngIf="isLoading || message">
+      <div class="m-auto">
+        <ng-container *ngIf="isLoading">
+          <div class="text-center">Finding your location...</div>
+          <progress *ngIf="isLoading" class="progress w-56"></progress>
+        </ng-container>
+        <ng-container *ngIf="message">
+          <ng-container [ngTemplateOutlet]="alertMessage"></ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div id="map" [hidden]="isLoading || message"></div>
+  </div>
+</div>
+
+
+<ng-template #alertMessage>
+  <div class="alert shadow-lg">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{{message}}</span>
+    </div>
+    <div class="flex-none">
+      <button class="btn btn-sm" (click)="message = ''">Okay</button>
+    </div>
+  </div>
+</ng-template>

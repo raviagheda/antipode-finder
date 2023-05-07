@@ -1,0 +1,38 @@
+<div class="flex items-center">
+    <div>
+      <span style="font-size: 22px;">Find your Antipode</span>
+      ( Exact opposite side of your location on earth )
+    </div>
+    <div class="grow"></div>
+
+    <div class="flex items-center">
+      <img style="height: 30px" src="assets/images/person_pin.svg">
+      <div> Your Location </div>
+    </div>
+
+    <div class="mx-2">
+      |
+    </div>
+    <div class="flex items-center">
+      <img style="height: 30px" src="assets/images/pin.svg">
+      <div> Your Antipode </div>
+    </div>
+    <div class="mx-2">
+      |
+    </div>
+    <div>
+      <a class="link" href="https://www.latlong.net/" target="_blank">Find lat lang using address</a>
+    </div>
+  </div>
+  <div class="flex items-center mt-2">
+    <ng-container [formGroup]="form">
+      <div class="mr-1">
+        Lat:
+      </div>
+      <input type="text" placeholder="Lat" class="input input-bordered mr-2" formControlName="lat" />
+      <div class="mr-1">
+        Lang:
+      </div>
+      <input type="text" placeholder="Lang" class="input input-bordered" formControlName="lng" />
+    </ng-container>
+  </div>
