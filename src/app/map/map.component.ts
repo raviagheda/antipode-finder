@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((res) => {
       if(res?.lat && res?.lng) {
-        this.setMarker(res?.lat, res?.lng);
+        this.setMarker(Number(res?.lat), Number(res?.lng));
       }
     })
     this.initMap();
@@ -69,7 +69,7 @@ export class MapComponent implements OnInit {
           lat: latitude,
           lng: longitude
         }, {emitEvent: false});
-        this.setMarker(latitude, longitude);
+        this.setMarker(Number(latitude), Number(longitude));
         this.isLoading.set(false);
       });
     } else {
